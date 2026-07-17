@@ -344,6 +344,30 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(-6px); }
         }
+
+        @media (max-width: 768px) {
+
+    .cake-container{
+        width: 220px;
+        height: 300px;   /* Reduce from 350px */
+        padding-bottom: 0;
+    }
+
+    .cake{
+        transform: perspective(1000px) rotateX(12deg) scale(0.8);
+        bottom: 0;
+    }
+
+    .cake-plate{
+        width: 220px;
+    }
+
+    .next-page-button{
+        position: relative;
+        bottom: 0;
+        margin-top: 20px;
+    }
+}
     </style>
 </head>
 <body>
