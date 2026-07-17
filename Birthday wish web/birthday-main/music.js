@@ -219,38 +219,62 @@ class BirthdayMusicEngine {
         this.visualizerBars = controller.querySelectorAll('.vis-bar');
         
         // Add click listener
-        controller.addEventListener('click', this.togglePlay);
+        controller.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent the document click event
+    this.togglePlay();
+});
 
-        // Resume audio if it should play according to state
-        if (shouldPlay) {
-            // Note: browser autoplay policies may block this on the very first page load.
-            // That's why on index.html we'll hook the start action to a click.
-            const startPlaying = () => {
-                this.audio.play()
-                    .then(() => {
-                        this.setPlayingState(true);
-                        this.fadeIn();
-                    })
-                    .catch(err => {
-                        console.log("Autoplay was prevented. User gesture needed to start playing.", err);
-                        this.setPlayingState(false);
-                    });
-                document.removeEventListener('click', startPlaying);
-                document.removeEventListener('keydown', startPlaying);
-            };
-            
-            // Try playing immediately
-            this.audio.play()
-                .then(() => {
-                    this.setPlayingState(true);
-                    this.fadeIn();
-                })
-                .catch(() => {
-                    // Fallback to user interaction anywhere on the page
-                    document.addEventListener('click', startPlaying);
-                    document.addEventListener('keydown', startPlaying);
-                });
-        }
+    // Restore saved playback position
+const savedTime = localStorage.getItem(this.storageKeyTime);
+if (savedTime) {
+    this.audio.currentTime = parseFloat(savedTime);
+}
+
+// If music was already playing before refresh, start it
+if (shouldPlay) {
+    const resumeMusic = () => {
+        this.audio.play()
+            .then(() => {
+                this.setPlayingState(true);
+                this.fadeIn();
+            })
+            .catch(console.error);
+
+        document.removeEventListener("click", resumeMusic);
+        document.removeEventListener("touchstart", resumeMusic);
+        document.removeEventListener("keydown", resumeMusic);
+    };
+
+    this.audio.play()
+        .then(() => {
+            this.setPlayingState(true);
+            this.fadeIn();
+        })
+        .catch(() => {
+            document.addEventListener("click", resumeMusic, { once: true });
+            document.addEventListener("touchstart", resumeMusic, { once: true });
+            document.addEventListener("keydown", resumeMusic, { once: true });
+        });
+} else {
+    // Start music when user clicks ANYWHERE for the first time
+    const startMusic = () => {
+        this.audio.play()
+            .then(() => {
+                this.setPlayingState(true);
+                this.fadeIn();
+            })
+            .catch(console.error);
+
+        document.removeEventListener("click", startMusic);
+        document.removeEventListener("touchstart", startMusic);
+        document.removeEventListener("keydown", startMusic);
+    };
+
+    document.addEventListener("click", startMusic, { once: true });
+    document.addEventListener("touchstart", startMusic, { once: true });
+    document.addEventListener("keydown", startMusic, { once: true });
+}
+
     }
 
     setPlayingState(isPlaying) {
