@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love 💖</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Quicksand:wght@500;700&family=Dancing+Script:wght@700&display=swap"
+        rel="stylesheet">
+    <!-- GSAP for micro-animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Ambient glowing lights background -->
+    <div class="glow-orb" style="top: -100px; left: 10%;"></div>
+    <div class="glow-orb" style="bottom: -150px; right: 5%; animation-delay: -5s;"></div>
+
+    <div class="header">
+        <h1>✨ For My Favorite Person ✨</h1>
+        <p id="happyBdayPara">Happy Birthday Sree, click the card below to open it!</p>
+    </div>
+
+    <!-- Main Grid Dashboard layout -->
+    <div class="dashboard-container">
+
+        <!-- Left: Card opens the photo lightbox on tap, same as the Memory Lane cards -->
+        <div class="card-section">
+            <div class="birthdayCard" id="bdayCardElement">
+
+                <!-- Cover panel -->
+                <div class="cardFront">
+                    <div class="front-text">
+                        <h3 class="happy">HAPPY</h3>
+                        <h2 class="bday">BIRTHDAY</h2>
+                        <h3 class="toyou">to you!</h3>
+                    </div>
+                    <div class="ribbon-graphic"></div>
+                    <div class="front-cake-graphic">
+                        <span>🎂</span>
+                    </div>
+                    <div class="ribbon-graphic"></div>
+                    <div class="front-footer">Tap To Open</div>
+                </div>
+
+                <!-- Hidden data source: read by JS and shown inside the photo lightbox on tap -->
+                <div class="cardInside" hidden>
+                    <img src="images/penguin.jpg" alt="Muqadas Picture" id="mainCardImg">
+                    <p id="dearNamePara">Dear Muqadas,</p>
+                    <p id="mainCardWish">Happy birthday! I hope your day is filled with lots of love and laughter! May all of your
+                        birthday wishes come true.</p>
+                    <p class="signature-name" id="mainCardSignature">Pookie</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right: Memory Lane Polaroid Gallery deck -->
+        <div class="polaroids-section">
+            <h2 class="section-title">📸 Our Memory Lane</h2>
+
+            <div class="polaroid-deck">
+
+                <!-- Polaroid 1 -->
+                <!-- data-img points to the full-size photo shown when this polaroid is clicked -->
+                <div class="polaroid-card" style="--rot: -3deg;" data-img="images/moment-coffee.jpg"
+                    data-caption="First Date Sweetness" data-emoji="☕">
+                    <div class="vector-pic">☕</div>
+                    <p class="caption">First Date Sweetness</p>
+                </div>
+
+                <!-- Polaroid 2 -->
+                <div class="polaroid-card" style="--rot: 2.5deg;" data-img="images/moment-chat.jpg"
+                    data-caption="Late Night Chats" data-emoji="💬">
+                    <div class="vector-pic" style="background: linear-gradient(135deg, #e8dbfc 0%, #bde0fe 100%)">💬
+                    </div>
+                    <p class="caption">Late Night Chats</p>
+                </div>
+
+                <!-- Polaroid 3 -->
+                <div class="polaroid-card" style="--rot: -2deg;" data-img="images/moment-sunrise.jpg"
+                    data-caption="Sunrise Adventures" data-emoji="🌅">
+                    <div class="vector-pic" style="background: linear-gradient(135deg, #c3fcd0 0%, #a2ead4 100%)">🌅
+                    </div>
+                    <p class="caption">Sunrise Adventures</p>
+                </div>
+
+                <!-- Polaroid 4 -->
+                <div class="polaroid-card" style="--rot: 4deg;" data-img="images/moment-hugs.jpg"
+                    data-caption="Sweetest Hugs" data-emoji="💖">
+                    <div class="vector-pic" style="background: linear-gradient(135deg, #fceadb 0%, #ffc0a3 100%)">💖
+                    </div>
+                    <p class="caption">Sweetest Hugs</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Wish Board Game: popping floating helium balloons -->
+    <div class="balloon-wishes-board">
+        <h2 class="board-title">🎈 Pop My Wishing Balloons! 🎈</h2>
+        <p style="margin-bottom: 20px; font-size: 14px; opacity: 0.8; color: #ffd1eb;">Click on any balloon to pop it
+            and reveal a special message from Pookie!</p>
+
+        <div class="balloons-flex" id="balloonList">
+            <!-- Balloon items populated by JavaScript with random colors -->
+        </div>
+    </div>
+
+    <!-- Wish overlay popups -->
+    <div class="wish-popup-overlay" id="wishPopupOverlay">
+        <div class="wish-popup-card">
+            <div class="wish-popup-icon" id="wishPopupIcon">🎁</div>
+            <h2 id="wishPopupTitle">Wish Unfolded</h2>
+            <p id="wishPopupMessage">Your beautiful birthday wish goes here!</p>
+            <button class="wish-close-btn" id="wishCloseBtn">Close Wish 💖</button>
+        </div>
+    </div>
+
+    <!-- Photo Lightbox: opens when the main card or a Memory Lane polaroid is tapped -->
+    <div class="photo-lightbox-overlay" id="photoLightboxOverlay">
+        <span class="photo-lightbox-close" id="photoLightboxClose">&times;</span>
+        <div class="photo-lightbox-card">
+            <div class="photo-lightbox-frame" id="photoLightboxFrame">
+                <!-- filled dynamically: either <img> or a big emoji vector -->
+            </div>
+            <p class="photo-lightbox-caption" id="photoLightboxCaption"></p>
+            <p class="photo-lightbox-message" id="photoLightboxMessage"></p>
+            <p class="photo-lightbox-signature" id="photoLightboxSignature"></p>
+        </div>
+    </div>
+
+
+    <!-- Persistent BGM Widget -->
+    <script src="music2.js"></script>
+
+    <script>
+        // Retrieve love name and update DOM elements dynamically
+        const loveName = localStorage.getItem('birthday_love_name') || 'Sree';
+        document.getElementById('happyBdayPara').textContent = `Happy Birthday ${loveName}, click the card below to open it!`;
+        document.getElementById('dearNamePara').textContent = `Dear ${loveName},`;
+
+        // 1. Main card — tapping it opens the photo lightbox, same as a Memory Lane card
+        const bdayCard = document.getElementById('bdayCardElement');
+
+        bdayCard.addEventListener('click', () => {
+            const imgSrc = document.getElementById('mainCardImg').src;
+            const message = document.getElementById('mainCardWish').textContent;
+            const signature = document.getElementById('mainCardSignature').textContent;
+            const dearLine = document.getElementById('dearNamePara').textContent;
+
+            openPhotoLightbox(imgSrc, 'My Cutie 🐧', '🐧', `${dearLine} ${message}`, signature);
+
+            // Micro scaling bounce for tactile feedback
+            gsap.to(bdayCard, {
+                scale: 0.98,
+                duration: 0.1,
+                yoyo: true,
+                repeat: 1
+            });
+        });
+
+        // 2. Populating balloon game dashboard
+        const balloonsData = [
+            {
+                emoji: '💖',
+                title: 'Cute Love Note',
+                msg: 'To the absolute favorite person in my universe! May your smile never leave your face, because it makes my whole world shine. I love you Muqadas! 🌟',
+                color: '#ff629c',
+                glow: 'rgba(255, 98, 156, 0.4)'
+            },
+            {
+                emoji: '💫',
+                title: 'Beautiful Dreams',
+                msg: 'May this year unlock all your goals, sweet projects, and bring you absolute happiness. Keep dreaming big, I will always support you! 🎯',
+                color: '#9c66ff',
+                glow: 'rgba(156, 102, 255, 0.4)'
+            },
+            {
+                emoji: '🎀',
+                title: 'Cuddly Adventures',
+                msg: 'Cheers to infinite more coffee walks, late night calls, hilarious inside jokes, and silly little fights that only draw us closer! ☕',
+                color: '#4dbdff',
+                glow: 'rgba(77, 189, 255, 0.4)'
+            },
+            {
+                emoji: '🌸',
+                title: 'Pure Happiness',
+                msg: 'You deserve the absolute best that life can offer! May your special days be filled with warm laughs, tasty food, and endless cozy comfort. 🍰',
+                color: '#47ff96',
+                glow: 'rgba(71, 255, 150, 0.4)'
+            },
+            {
+                emoji: '🎂',
+                title: 'Pookie\'s Promise',
+                msg: 'No matter how many birthday candles we blow out, my heart will always beat for you. Have the happiest birthday, my pookie penguin! 🐧💖',
+                color: '#ffc129',
+                glow: 'rgba(255, 193, 41, 0.4)'
+            }
+        ];
+
+        // Replace occurrences of hardcoded name in balloon messages with dynamic name
+        balloonsData.forEach(b => {
+            b.msg = b.msg.replace(/Muqadas/g, loveName);
+        });
+
+        const balloonList = document.getElementById('balloonList');
+        const overlay = document.getElementById('wishPopupOverlay');
+        const overlayIcon = document.getElementById('wishPopupIcon');
+        const overlayTitle = document.getElementById('wishPopupTitle');
+        const overlayMsg = document.getElementById('wishPopupMessage');
+        const closeBtn = document.getElementById('wishCloseBtn');
+
+        balloonsData.forEach((b, idx) => {
+            const balloon = document.createElement('div');
+            balloon.className = 'game-balloon';
+            balloon.style.background = b.color;
+            balloon.style.setProperty('--balloon-color', b.color);
+            balloon.style.setProperty('--glow-color', b.glow);
+            balloon.style.animationDelay = `${idx * -0.8}s`;
+
+            balloon.innerHTML = `
+                <div class="string-knot"></div>
+                <div style="position:absolute; top:45%; left:50%; transform:translate(-50%,-50%); font-size:1.6rem; user-select:none;">
+                    ${b.emoji}
+                </div>
+            `;
+
+            // Pop balloon click logic
+            balloon.addEventListener('click', () => {
+                // Shrink pop sound / visual puff sequence
+                gsap.to(balloon, {
+                    scale: 0.1,
+                    opacity: 0,
+                    rotation: 45,
+                    duration: 0.25,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        // Display visual glass card overlay
+                        overlayIcon.innerText = b.emoji;
+                        overlayTitle.innerText = b.title;
+                        overlayMsg.innerText = b.msg;
+                        overlay.classList.add('show');
+
+                        balloon.remove();
+                    }
+                });
+            });
+
+            balloonList.appendChild(balloon);
+        });
+
+        closeBtn.addEventListener('click', () => {
+            overlay.classList.remove('show');
+        });
+
+        // Close overlay on clicking empty background
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove('show');
+            }
+        });
+
+        // 3. Gentle Polaroid mouse tilting effect (desktop pointer devices only)
+        const cards = document.querySelectorAll('.polaroid-card');
+        const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+        if (supportsHover) {
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const xc = rect.width / 2;
+                    const yc = rect.height / 2;
+
+                    const rotateY = ((x - xc) / xc) * 8; // -8 to 8 deg
+                    const rotateX = -((y - yc) / yc) * 8; // -8 to 8 deg
+
+                    card.style.transform = `scale(1.04) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        }
+
+        // 4. Photo lightbox — shared by the main card and Memory Lane polaroids
+        const photoLightbox = document.getElementById('photoLightboxOverlay');
+        const photoLightboxClose = document.getElementById('photoLightboxClose');
+        const photoLightboxFrame = document.getElementById('photoLightboxFrame');
+        const photoLightboxCaption = document.getElementById('photoLightboxCaption');
+        const photoLightboxMessage = document.getElementById('photoLightboxMessage');
+        const photoLightboxSignature = document.getElementById('photoLightboxSignature');
+
+        function openPhotoLightbox(imgSrc, caption, emoji, message, signature) {
+            emoji = emoji || '💖';
+
+            // Try the real photo first; if it fails to load (no file yet),
+            // fall back to a large version of the emoji.
+            const img = new Image();
+            img.className = 'photo-lightbox-img';
+            img.alt = caption;
+            img.onload = () => {
+                photoLightboxFrame.innerHTML = '';
+                photoLightboxFrame.appendChild(img);
+            };
+            img.onerror = () => {
+                photoLightboxFrame.innerHTML = `<div class="photo-lightbox-emoji">${emoji}</div>`;
+            };
+            img.src = imgSrc;
+
+            // Show a placeholder immediately so the overlay never looks empty
+            photoLightboxFrame.innerHTML = `<div class="photo-lightbox-emoji">${emoji}</div>`;
+            photoLightboxCaption.textContent = caption;
+
+            // Message/signature only show up when provided (the main card passes
+            // its birthday wish; Memory Lane polaroids leave these blank/hidden).
+            photoLightboxMessage.textContent = message || '';
+            photoLightboxMessage.style.display = message ? 'block' : 'none';
+            photoLightboxSignature.textContent = signature || '';
+            photoLightboxSignature.style.display = signature ? 'block' : 'none';
+
+            photoLightbox.classList.add('show');
+        }
+
+        // Memory Lane polaroids
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                openPhotoLightbox(card.dataset.img, card.dataset.caption, card.dataset.emoji);
+            });
+        });
+
+        function closePhotoLightbox() {
+            photoLightbox.classList.remove('show');
+        }
+
+        photoLightboxClose.addEventListener('click', closePhotoLightbox);
+        photoLightbox.addEventListener('click', (e) => {
+            if (e.target === photoLightbox) closePhotoLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePhotoLightbox();
+        });
+    </script>
+</body>
+
+</html>
