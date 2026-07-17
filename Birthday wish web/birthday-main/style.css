@@ -13,6 +13,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -21,6 +22,9 @@ html {
 
 body {
     min-height: 100vh;
+    min-height: 100svh; /* respects mobile browser UI chrome */
+    width: 100%;
+    max-width: 100vw;
     background: var(--bg-mesh);
     background-size: 300% 300%;
     animation: bgMovement 20s ease infinite;
@@ -30,7 +34,7 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
-    padding: 30px 20px;
+    padding: clamp(16px, 5vw, 30px) clamp(12px, 4vw, 20px);
     position: relative;
 }
 
@@ -46,6 +50,8 @@ body {
     position: absolute;
     width: 450px;
     height: 450px;
+    max-width: 70vw;
+    max-height: 70vw;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 117, 140, 0.35) 0%, rgba(106, 76, 147, 0) 70%);
     filter: blur(60px);
@@ -59,21 +65,27 @@ body {
     margin-bottom: 2rem;
     z-index: 10;
     user-select: none;
+    width: 100%;
+    max-width: 700px;
+    padding: 0 8px;
 }
 
 .header h1 {
-    font-size: 3rem;
+    font-size: clamp(1.5rem, 6.5vw, 3rem);
     font-weight: 800;
     color: #ff6ca5;
     text-shadow: 0 0 20px rgba(255, 108, 165, 0.4);
     font-family: 'Outfit', sans-serif;
+    line-height: 1.2;
+    word-break: break-word;
 }
 
 .header p {
-    font-size: 1.15rem;
+    font-size: clamp(0.85rem, 3vw, 1.15rem);
     opacity: 0.85;
     margin-top: 5px;
     color: #ffd8ec;
+    line-height: 1.4;
 }
 
 .dashboard-container {
@@ -93,6 +105,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     /* perspective lives on the PARENT, not on the card's own transform.
        Baking perspective() into the same transform that also rotates
        ~155deg pushes the flipped face behind the camera plane and the
@@ -107,7 +120,8 @@ body {
     cursor: pointer;
     transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border-radius: 20px;
-    max-width: 90vw;
+    max-width: 84vw;
+    max-height: min(400px, 118vw);
 }
 
 .birthdayCard:hover {
@@ -138,7 +152,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 30px 20px;
+    padding: clamp(18px, 5vw, 30px) clamp(12px, 4vw, 20px);
     z-index: 2;
 }
 
@@ -148,15 +162,15 @@ body {
 }
 
 .cardFront h3.happy {
-    font-size: 1.5rem;
-    letter-spacing: 5px;
+    font-size: clamp(1.05rem, 4vw, 1.5rem);
+    letter-spacing: clamp(2px, 1vw, 5px);
     color: #ff60ad;
     font-weight: 700;
 }
 
 .cardFront h2.bday {
     font-family: 'Outfit', sans-serif;
-    font-size: 2.3rem;
+    font-size: clamp(1.6rem, 6.5vw, 2.3rem);
     font-weight: 800;
     color: #d13d7a;
     line-height: 1.1;
@@ -165,7 +179,7 @@ body {
 
 .cardFront h3.toyou {
     font-family: 'Dancing Script', cursive;
-    font-size: 2.1rem;
+    font-size: clamp(1.5rem, 6vw, 2.1rem);
     color: #ff60ad;
 }
 
@@ -178,8 +192,8 @@ body {
 
 /* Beautiful stylized flat vector cake inside front cover */
 .front-cake-graphic {
-    width: 130px;
-    height: 130px;
+    width: clamp(88px, 30vw, 130px);
+    height: clamp(88px, 30vw, 130px);
     background: radial-gradient(circle, #ffeaf2 0%, #ffcbdc 100%);
     border-radius: 50%;
     display: flex;
@@ -190,7 +204,7 @@ body {
 }
 
 .front-cake-graphic span {
-    font-size: 4rem;
+    font-size: clamp(2.6rem, 9vw, 4rem);
     filter: drop-shadow(0 4px 8px rgba(255, 105, 180, 0.4));
     animation: bounceGraphics 3s infinite ease-in-out;
 }
@@ -201,7 +215,7 @@ body {
 }
 
 .front-footer {
-    font-size: 11px;
+    font-size: clamp(9px, 2.6vw, 11px);
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #a0818d;
@@ -215,11 +229,12 @@ body {
     flex-direction: column;
     gap: 1.5rem;
     min-width: 0;
+    width: 100%;
 }
 
 .section-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.7rem;
+    font-size: clamp(1.25rem, 5vw, 1.7rem);
     font-weight: 700;
     color: #ffa5cc;
     margin-bottom: 0.5rem;
@@ -230,12 +245,12 @@ body {
 .polaroid-deck {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: clamp(12px, 4vw, 20px);
 }
 
 .polaroid-card {
     background: #ffffff;
-    padding: 12px 12px 26px 12px;
+    padding: 10px 10px 22px 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     border-radius: 6px;
     display: flex;
@@ -246,6 +261,7 @@ body {
     transform-style: preserve-3d;
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.9);
+    min-width: 0;
 }
 
 .polaroid-card:nth-child(even) {
@@ -268,7 +284,7 @@ body {
 
 .polaroid-card img.pic {
     width: 100%;
-    height: 120px;
+    height: clamp(80px, 22vw, 120px);
     object-fit: cover;
     border-radius: 2px;
     background: #f0f0f0;
@@ -277,23 +293,24 @@ body {
 /* Colorful styled placeholder vectors in case no image is set */
 .polaroid-card .vector-pic {
     width: 100%;
-    height: 120px;
+    height: clamp(80px, 22vw, 120px);
     border-radius: 2px;
     background: linear-gradient(135deg, #ffd3ec 0%, #ff8ab7 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.8rem;
+    font-size: clamp(2rem, 7vw, 2.8rem);
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
 }
 
 .polaroid-card p.caption {
     font-family: 'Dancing Script', cursive;
-    font-size: 1.35rem;
+    font-size: clamp(1.05rem, 4vw, 1.35rem);
     font-weight: 700;
     color: #4b2354;
     margin-top: 12px;
     text-align: center;
+    word-break: break-word;
 }
 
 /* 3. Floating Wish Balloons Popping mini-game */
@@ -305,7 +322,7 @@ body {
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
     border-radius: 30px;
-    padding: 2rem;
+    padding: clamp(1.2rem, 5vw, 2rem);
     text-align: center;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     z-index: 10;
@@ -314,7 +331,7 @@ body {
 
 .board-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.8rem;
+    font-size: clamp(1.3rem, 5.5vw, 1.8rem);
     font-weight: 700;
     color: #ff9ec7;
     margin-bottom: 1.5rem;
@@ -324,7 +341,9 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 25px;
+    gap: clamp(14px, 4vw, 25px);
+    /* extra top margin so the wobble + string don't get clipped by the board edge */
+    padding-top: 12px;
 }
 
 .game-balloon {
@@ -383,6 +402,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     background: rgba(15, 10, 30, 0.7);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -404,10 +424,12 @@ body {
 .wish-popup-card {
     background: rgba(255, 255, 255, 0.95);
     border: 2px solid #ff7fae;
-    border-radius: 30px;
-    padding: 2.5rem;
+    border-radius: 24px;
+    padding: clamp(1.6rem, 6vw, 2.5rem);
     max-width: 450px;
-    width: 90%;
+    width: 92%;
+    max-height: 85dvh;
+    overflow-y: auto;
     text-align: center;
     color: var(--text-dark);
     box-shadow: 0 20px 50px rgba(255, 105, 180, 0.3);
@@ -420,7 +442,7 @@ body {
 }
 
 .wish-popup-icon {
-    font-size: 3.5rem;
+    font-size: clamp(2.6rem, 9vw, 3.5rem);
     margin-bottom: 1rem;
     animation: popShake 0.6s ease-out;
 }
@@ -431,14 +453,14 @@ body {
 }
 
 .wish-popup-card h2 {
-    font-size: 1.8rem;
+    font-size: clamp(1.35rem, 5.5vw, 1.8rem);
     font-weight: 800;
     color: #ff3e8d;
     margin-bottom: 12px;
 }
 
 .wish-popup-card p {
-    font-size: 1.15rem;
+    font-size: clamp(0.95rem, 3.6vw, 1.15rem);
     line-height: 1.6;
     color: #555555;
     margin-bottom: 1.5rem;
@@ -446,15 +468,18 @@ body {
 }
 
 .wish-close-btn {
-    padding: 10px 24px;
+    padding: 12px 26px;
     background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
     border: none;
     border-radius: 50px;
     color: white;
     font-weight: 700;
+    font-size: 0.95rem;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(255, 118, 140, 0.4);
     transition: all 0.3s ease;
+    /* comfortable touch target */
+    min-height: 44px;
 }
 
 .wish-close-btn:hover {
@@ -469,6 +494,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     background: rgba(10, 6, 20, 0.85);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -497,6 +523,9 @@ body {
     line-height: 1;
     z-index: 10002;
     transition: transform 0.2s ease, color 0.2s ease;
+    /* comfortable touch target without changing visual size */
+    padding: 10px;
+    margin: -10px;
 }
 
 .photo-lightbox-close:hover {
@@ -507,9 +536,11 @@ body {
 .photo-lightbox-card {
     background: #ffffff;
     border-radius: 20px;
-    padding: 16px 16px 26px 16px;
+    padding: clamp(12px, 4vw, 16px) clamp(12px, 4vw, 16px) clamp(20px, 5vw, 26px) clamp(12px, 4vw, 16px);
     max-width: 420px;
     width: 100%;
+    max-height: 88dvh;
+    overflow-y: auto;
     text-align: center;
     box-shadow: 0 25px 60px rgba(255, 105, 180, 0.35);
     transform: scale(0.8);
@@ -529,7 +560,7 @@ body {
 
 .photo-lightbox-img {
     width: 100%;
-    max-height: 60vh;
+    max-height: 55dvh;
     display: block;
     object-fit: cover;
     border-radius: 10px;
@@ -537,16 +568,16 @@ body {
 
 .photo-lightbox-emoji {
     width: 100%;
-    height: 260px;
+    height: clamp(180px, 45vw, 260px);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5.5rem;
+    font-size: clamp(3.6rem, 14vw, 5.5rem);
 }
 
 .photo-lightbox-caption {
     font-family: 'Dancing Script', cursive;
-    font-size: 1.7rem;
+    font-size: clamp(1.3rem, 5.5vw, 1.7rem);
     font-weight: 700;
     color: #4b2354;
     margin-top: 16px;
@@ -554,7 +585,7 @@ body {
 
 .photo-lightbox-message {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.98rem;
+    font-size: clamp(0.88rem, 3.4vw, 0.98rem);
     line-height: 1.55;
     color: #555555;
     font-weight: 500;
@@ -564,7 +595,7 @@ body {
 
 .photo-lightbox-signature {
     font-family: 'Dancing Script', cursive;
-    font-size: 1.6rem;
+    font-size: clamp(1.25rem, 5vw, 1.6rem);
     color: #ff3c8c;
     font-weight: 700;
     margin-top: 10px;
@@ -573,7 +604,12 @@ body {
 }
 
 
-/* Responsiveness */
+/* ============================================================
+   Responsiveness
+   Breakpoints: 900px (tablet stack), 600px (large phone),
+   480px, 425px (small/standard phone), 375px, 340px, 320px
+   ============================================================ */
+
 @media screen and (max-width: 900px) {
     .dashboard-container {
         flex-direction: column;
@@ -591,70 +627,146 @@ body {
 
 @media screen and (max-width: 600px) {
     body {
-        padding: 24px 14px;
-    }
-    .header h1 {
-        font-size: 2rem;
-    }
-    .header p {
-        font-size: 0.95rem;
-        padding: 0 10px;
+        padding: 22px 12px;
     }
     .dashboard-container {
         gap: 2.2rem;
-    }
-    .birthdayCard {
-        width: 260px;
-        height: 370px;
+        margin-bottom: 2.2rem;
     }
     .birthdayCard.open {
         /* Slightly reduced rotation keeps the inside panel fully on-screen on narrow viewports */
         transform: rotateX(4deg) rotateY(-172deg);
     }
-    .cardFront h2.bday { font-size: 1.9rem; }
-    .cardFront h3.happy { font-size: 1.2rem; letter-spacing: 3px; }
-    .cardFront h3.toyou { font-size: 1.7rem; }
-    .front-cake-graphic { width: 100px; height: 100px; }
-    .front-cake-graphic span { font-size: 3rem; }
-
-
-    .section-title { font-size: 1.4rem; text-align: center; }
-    .polaroid-deck {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-    }
-    .polaroid-card .vector-pic,
-    .polaroid-card img.pic {
-        height: 90px;
-        font-size: 2.2rem;
-    }
-    .polaroid-card p.caption { font-size: 1.05rem; }
-
+    .section-title { text-align: center; }
     .balloon-wishes-board {
-        padding: 1.4rem 1rem;
-        border-radius: 20px;
-    }
-    .board-title { font-size: 1.4rem; }
-    .game-balloon { width: 54px; height: 68px; }
-
-    .wish-popup-card, .photo-lightbox-card {
-        padding: 1.6rem;
-    }
-    .photo-lightbox-close {
-        top: 14px;
-        right: 18px;
-        font-size: 1.9rem;
+        border-radius: 22px;
     }
 }
 
-@media screen and (max-width: 380px) {
-    .polaroid-deck {
-        grid-template-columns: 1fr;
-        max-width: 220px;
-        margin: 0 auto;
+/* Standard modern phones (iPhone 12/13/14, Pixel, Galaxy) */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 18px 12px;
+    }
+    .header {
+        margin-bottom: 1.5rem;
+    }
+    .dashboard-container {
+        gap: 1.8rem;
     }
     .birthdayCard {
-        width: 230px;
-        height: 340px;
+        width: 250px;
+        height: 350px;
+        max-width: 80vw;
+    }
+    .polaroid-deck {
+        gap: 12px;
+    }
+    .polaroid-card {
+        padding: 8px 8px 18px 8px;
+    }
+    .balloon-wishes-board {
+        padding: 1.3rem 0.9rem;
+    }
+    .balloons-flex {
+        gap: 16px;
+        row-gap: 26px; /* extra room so wobbling balloons don't collide vertically */
+    }
+    .game-balloon {
+        width: 52px;
+        height: 66px;
+    }
+}
+
+/* The 425px line itself — iPhone SE/8+ landscape-width phones and similar */
+@media screen and (max-width: 425px) {
+    .header h1 {
+        letter-spacing: -0.01em;
+    }
+    .cardFront .ribbon-graphic {
+        margin: 10px 0;
+    }
+    .polaroid-card p.caption {
+        margin-top: 8px;
+    }
+    .wish-popup-card, .photo-lightbox-card {
+        border-radius: 18px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .header h1 { font-size: clamp(1.35rem, 7.5vw, 1.7rem); }
+    .birthdayCard {
+        width: 225px;
+        height: 320px;
+    }
+    .front-cake-graphic {
+        width: 84px;
+        height: 84px;
+    }
+    .polaroid-deck {
+        gap: 10px;
+    }
+    .game-balloon {
+        width: 46px;
+        height: 58px;
+    }
+    .game-balloon > div {
+        font-size: 1.3rem !important;
+    }
+}
+
+/* Small/older phones (iPhone SE 1st gen, small Android) */
+@media screen and (max-width: 340px) {
+    body {
+        padding: 14px 8px;
+    }
+    .header h1 { font-size: 1.2rem; }
+    .header p { font-size: 0.78rem; }
+    .birthdayCard {
+        width: 100%;
+        max-width: 210px;
+        height: 300px;
+    }
+    .cardFront h2.bday { font-size: 1.4rem; }
+    .cardFront h3.happy { font-size: 0.95rem; letter-spacing: 2px; }
+    .cardFront h3.toyou { font-size: 1.3rem; }
+    .polaroid-deck {
+        grid-template-columns: 1fr;
+        max-width: 210px;
+        margin: 0 auto;
+        gap: 10px;
+    }
+    .polaroid-card .vector-pic,
+    .polaroid-card img.pic {
+        height: 100px;
+    }
+    .balloon-wishes-board {
+        padding: 1rem 0.7rem;
+        border-radius: 16px;
+    }
+    .board-title { font-size: 1.15rem; }
+    .balloons-flex {
+        gap: 12px;
+        row-gap: 22px;
+    }
+    .game-balloon { width: 42px; height: 54px; }
+    .wish-popup-card, .photo-lightbox-card {
+        padding: 1.3rem 1.1rem;
+    }
+    .photo-lightbox-close {
+        top: 10px;
+        right: 14px;
+        font-size: 1.7rem;
+    }
+}
+
+/* Respect users who've asked for less motion */
+@media (prefers-reduced-motion: reduce) {
+    body { animation: none; }
+    .game-balloon { animation: none; }
+    .front-cake-graphic span { animation: none; }
+    .birthdayCard, .polaroid-card, .wish-popup-card, .photo-lightbox-card {
+        transition: none;
     }
 }
