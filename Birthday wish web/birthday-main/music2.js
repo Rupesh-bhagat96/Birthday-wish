@@ -3,7 +3,7 @@
 
 class BirthdayMusicEngine {
     constructor() {
-        this.songUrl = './images/finalmusic.mp4';
+        this.songUrl = './images/finalSong.mp4';
         this.storageKeyTime = 'birthday_music_time';
         this.storageKeyPlaying = 'birthday_music_playing';
         this.audio = null;
