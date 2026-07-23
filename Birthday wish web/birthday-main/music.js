@@ -256,23 +256,20 @@ if (shouldPlay) {
             document.addEventListener("keydown", resumeMusic, { once: true });
         });
 } else {
-    // Start music when user clicks ANYWHERE for the first time
-    const startMusic = () => {
+
+    window.addEventListener("load", () => {
+
         this.audio.play()
             .then(() => {
                 this.setPlayingState(true);
                 this.fadeIn();
             })
-            .catch(console.error);
+            .catch((err) => {
+                console.log("Autoplay blocked:", err);
+            });
 
-        document.removeEventListener("click", startMusic);
-        document.removeEventListener("touchstart", startMusic);
-        document.removeEventListener("keydown", startMusic);
-    };
+    });
 
-    document.addEventListener("click", startMusic, { once: true });
-    document.addEventListener("touchstart", startMusic, { once: true });
-    document.addEventListener("keydown", startMusic, { once: true });
 }
 
     }
